@@ -22,6 +22,8 @@ class LuaThread : public Object
 
     private:
         std::string code;
+        size_t code_size;
+
         std::vector<Variant> args;
 
         bool started;

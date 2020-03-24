@@ -2,8 +2,11 @@
 
 char * Object::ToString()
 {
-    char buffer[64];
+    char *buffer = (char *)malloc(64);
+    if (!buffer)
+        return nullptr;
+
     snprintf(buffer, 64, "%s: %p", this->type.c_str(), this);
 
-    return strdup(buffer);
+    return buffer;
 }

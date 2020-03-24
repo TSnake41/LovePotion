@@ -7,30 +7,34 @@ File::File(const char * path) : Object("File")
 {
     this->path = strdup(path);
     this->open = false;
+    this->mode = nullptr;
 }
 
 File::File(const char * path, const char * mode) : Object("File")
 {
     this->path = strdup(path);
     this->open = false;
+    this->mode = nullptr;
 
     this->Open(mode);
 }
 
 File::~File()
 {
-    if (this->open)
-        this->Flush();
+    free(this->path);
+
+    if (this->mode)
+        free(this->mode);
 
     this->Close();
 }
 
-long File::GetSize()
+size_t File::GetSize()
 {
-    long size = 0;
+    size_t size = 0;
 
     fseek(this->fileHandle, 0, SEEK_END);
-    size = ftell(this->fileHandle);
+    size = (size_t)ftell(this->fileHandle);
     rewind(this->fileHandle);
 
     return size;
@@ -67,7 +71,7 @@ void File::Write(const char * data, size_t length)
         return;
     }
 
-    fwrite(data, 1, length, this->fileHandle);
+    fwrite(data, length, 1, this->fileHandle);
 }
 
 void File::Flush()
@@ -77,11 +81,13 @@ void File::Flush()
 
 void File::Close()
 {
-
-    fclose(this->fileHandle);
+    if (this->open) {
+        fclose(this->fileHandle);
+        this->open = false;
+    }
 }
 
-char * File::Read()
+char *File::Read(size_t &size)
 {
     if (!this->open || (strncmp(this->mode, "r", 1) != 0))
     {
@@ -89,33 +95,12 @@ char * File::Read()
         return NULL;
     }
 
-    char * buffer;
+    size = this->GetSize();
+    char *buffer = (char *)malloc(size);
 
-    long size = this->GetSize();
+    if (!buffer)
+        return nullptr;
 
-    buffer = (char *)malloc(size * sizeof(char));
-
-    fread(buffer, 1, size, this->fileHandle);
-
-    buffer[size] = '\0';
-
-    return buffer;
-}
-
-u8 * File::ReadBinary()
-{
-    if (!this->open || (strncmp(this->mode, "rb", 2) != 0))
-        return NULL;
-
-    u8 * buffer;
-
-    long size = this->GetSize();
-
-    buffer = (u8 *)malloc(size * sizeof(u8));
-
-    fread(buffer, 1, size, this->fileHandle);
-
-    buffer[size] = '\0';
-
+    fread(buffer, size, 1, this->fileHandle);
     return buffer;
 }

@@ -12,10 +12,14 @@ LuaThread::LuaThread(const string & arg) : Object("Thread")
     if (LOVE_VALIDATE_FILE_EXISTS_CLEAN(pathCheck))
     {
         File codeFile(pathCheck, "r");
-        this->code = codeFile.Read();
+
+        // C++ & operator can be confusing...
+        this->code = codeFile.Read(this->code_size);
     }
-    else
+    else {
         this->code = arg;
+        this->code_size = arg.size();
+    }
 }
 
 void LuaThread::SetError(const string & error)
@@ -55,18 +59,11 @@ void LuaThread::Run()
     //luaL_requiref(L, "love", Love::Initialize, 1);
 
     //Joystick::Initialize(L);
-
-    //Get the code to run
-    string code = this->GetCode();
     
     //get our arguments
     vector<Variant> args = this->GetArgs();
 
-    //load our code
-    const char * codeBuffer = code.c_str();
-    size_t length = code.size();
-
-    if (luaL_loadbuffer(L, codeBuffer, length, this->ToString()) != 0)
+    if (luaL_loadbuffer(L, this->code.c_str(), this->code_size, this->ToString()) != 0)
         this->SetError(lua_tostring(L, -1));
     else
     {

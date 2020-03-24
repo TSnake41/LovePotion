@@ -9,9 +9,8 @@ class File : public Object
         File() {};
         ~File();
 
-        char * Read();
-        u8 * ReadBinary();
-
+        char * Read(size_t &size);
+        
         void Write(const char * data, size_t length);
 
         const char * GetMode();
@@ -21,11 +20,11 @@ class File : public Object
         void Flush();
         void Close();
 
-        long GetSize();
+        size_t GetSize();
     
     private:
-        const char * path;
-        const char * mode;
+        char * path;
+        char * mode;
 
         FILE * fileHandle;
         bool open;

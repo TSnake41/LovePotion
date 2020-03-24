@@ -23,31 +23,34 @@ int Filesystem::Read(lua_State * L)
 
     FILE * fileHandle = fopen(path.c_str(), "rb");
 
-    if (!fileHandle)
-        return 0;
+    if (!fileHandle) {
+        lua_pushnil(L);
+        lua_pushliteral(L, "Can't open file.");
+        return 2;
+    }
 
     fseek(fileHandle, 0, SEEK_END);
     size = ftell(fileHandle);
     rewind(fileHandle);
 
-    buffer = (char *)malloc(size + 1);
+    buffer = (char *)malloc(size);
 
     if (!buffer)
     {
         fclose(fileHandle);
-        return 0;
+
+        lua_pushnil(L);
+        lua_pushliteral(L, "Can't allocate file buffer.");
+        return 2;
     }
 
-    fread(buffer, 1, size, fileHandle);
-
+    fread(buffer, size, 1, fileHandle);
     fclose(fileHandle);
 
-    buffer[size] = '\0';
-
-    lua_pushstring(L, buffer);
+    lua_pushlstring(L, buffer, size);
+    lua_pushinteger(L, size);
 
     free(buffer);
-
     return 1;
 }
 
