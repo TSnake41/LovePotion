@@ -22,6 +22,9 @@ clean-3ds:
 clean-switch:
 	@$(MAKE) -C platform/switch clean
 
+3ds-luajit:
+	@$(MAKE) -C platform/3ds LUA_INCLUDES="$(CURDIR)/lua/platform/luajit/3ds/" LUA_LDFLAGS="-L$(CURDIR)/lua/platform/luajit/3ds/ -lluajit"
+
 3ds:
 	@$(MAKE) -C platform/3ds
 

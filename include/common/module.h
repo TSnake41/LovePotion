@@ -47,7 +47,7 @@ namespace love
     {
         const char * name;
         love::Type * type;
-        const luaL_reg * functions;
+        const luaL_Reg * functions;
         const lua_CFunction * types;
         Module * instance;
     };

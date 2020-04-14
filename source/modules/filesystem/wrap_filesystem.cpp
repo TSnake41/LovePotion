@@ -371,7 +371,7 @@ FileData * Wrap_Filesystem::GetFileData(lua_State * L, int index)
 
 int Wrap_Filesystem::Register(lua_State * L)
 {
-    luaL_reg reg[] =
+    luaL_Reg reg[] =
     {
         { "createDirectory",        CreateDirectory   },
         { "getDirectoryItems",      GetDirectoryItems },

@@ -14,6 +14,8 @@ enum Registry
 
 #define MAX_LUAOBJ_KEY 0x20000000000000ULL
 
+#include "runtime.h"
+
 #include "objects/object.h"
 #include "common/type.h"
 
@@ -43,7 +45,7 @@ namespace Luax
 
     int GetLOVEFunction(lua_State *L, const char * mod, const char * fn);
 
-    void SetFunctions(lua_State * L, const luaL_reg * l);
+    void SetFunctions(lua_State * L, const luaL_Reg * l);
 
     int RegisterModule(lua_State * L, const love::WrappedModule & module);
 

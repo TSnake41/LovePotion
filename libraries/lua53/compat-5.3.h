@@ -100,7 +100,7 @@ extern "C" {
 #  define LUA_ERRGCMM (LUA_ERRERR + 2)
 #endif /* LUA_ERRGCMM define */
 
-typedef size_t lua_Unsigned;
+//typedef size_t lua_Unsigned;
 
 typedef struct luaL_Buffer_53 {
   luaL_Buffer b; /* make incorrect code crash! */

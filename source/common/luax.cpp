@@ -242,7 +242,7 @@ int Luax::RegisterModule(lua_State * L, const WrappedModule & module)
 ** Sets the functions for a module/object
 ** See: https://github.com/love2d/love/blob/master/src/common/runtime.cpp#L355
 */
-void Luax::SetFunctions(lua_State * L, const luaL_reg * reg)
+void Luax::SetFunctions(lua_State * L, const luaL_Reg * reg)
 {
     if (reg == nullptr)
         return;
