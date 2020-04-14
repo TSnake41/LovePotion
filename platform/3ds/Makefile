@@ -47,12 +47,12 @@ INCLUDES	?=	${LOVE_INCLUDES} \
 
 #GRAPHICS	:=	gfx
 #GFXBUILD	:=	$(BUILD)
-#ROMFS		:=	romfs
+#ROMFS		:= romfs
 #GFXBUILD	:=	$(ROMFS)/gfx
 
 APP_TITLE		:= Löve Potion
-APP_DESCRIPTION	:= LÖVE for 3DS
-APP_AUTHOR		:= TurtleP & NotQuiteApex
+APP_DESCRIPTION	:= LÖVE for 3DS (with LuaJIT)
+APP_AUTHOR		:= TurtleP & NotQuiteApex (LuaJIT port by TSnake41)
 ICON			:= icon.png
 
 #---------------------------------------------------------------------------------
@@ -64,14 +64,14 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			-fomit-frame-pointer -ffunction-sections -DLOVE_POTION_CONSOLE="\"3DS\"" \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
+CFLAGS	+=	`arm-none-eabi-pkg-config --cflags luajit` $(INCLUDE) -DARM11 -D_3DS
 
 CXXFLAGS	:= $(CFLAGS) -Wno-psabi -fno-rtti -fexceptions -std=gnu++17
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= `curl-config --libs` `arm-none-eabi-pkg-config libmpg123 --libs` -lvorbisidec -logg -lcitro2d -lcitro3d -lctru -lm
+LIBS	:= `arm-none-eabi-pkg-config --libs --static luajit` `curl-config --libs` `arm-none-eabi-pkg-config libmpg123 --libs` -lvorbisidec -logg -lcitro2d -lcitro3d -lctru -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

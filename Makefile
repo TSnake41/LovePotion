@@ -8,7 +8,7 @@ export LOVE_SOURCES   = $(foreach dir, $(ROOT_SOURCES),   ../../$(wildcard $(dir
 export LOVE_INCLUDES  = $(foreach dir, $(ROOT_INCLUDES),  ../../$(wildcard $(dir)))
 export LOVE_LIBRARIES = $(foreach dir, $(ROOT_LIBRARIES), ../../$(wildcard $(dir)))
 
-export ROMFS = ../../nogame
+# export ROMFS = ../../nogame
 
 .PHONY: all 3ds switch clean clean-3ds clean-switch
 
